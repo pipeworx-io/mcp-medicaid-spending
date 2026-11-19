@@ -1,0 +1,176 @@
+[
+  {
+    "name": "medicaid_spending_by_state",
+    "description": "What one state (or the nation) spent on Medicaid in a federal fiscal year, by service category, split into federal and state share. Source: CMS, Medicaid Financial Management Report (CMS-64 net expenditures), fiscal years 2014 onward. Returns the headline total net expenditures with the federal share percentage, then the service-category rows (inpatient hospital, nursing facility, prescribed drugs, managed care, and so on) largest first. Use `category` to filter by a word in the category name (e.g. \"drug\", \"nursing\", \"managed care\"). A state, fiscal year or category that matches nothing returns the valid values, not an empty list.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "State, territory or DC: full name or two-letter code (\"Texas\", \"TX\"). \"national\" for the all-states total."
+        },
+        "fiscal_year": {
+          "type": "integer",
+          "description": "Federal fiscal year (October-September). Default: the latest in the series."
+        },
+        "program": {
+          "type": "string",
+          "enum": [
+            "medical_assistance",
+            "administration"
+          ],
+          "description": "medical_assistance = benefit spending (default); administration = administrative costs."
+        },
+        "category": {
+          "type": "string",
+          "description": "Case-insensitive word or phrase to match in the service-category name, e.g. \"drug\", \"nursing facility\", \"mco\"."
+        },
+        "include_chip": {
+          "type": "boolean",
+          "description": "Include the \"C-\" and \"T-\" CHIP-funded rows (default false)."
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum category rows (default 25, max 300)."
+        }
+      },
+      "required": [
+        "state"
+      ]
+    }
+  },
+  {
+    "name": "medicaid_spending_trend",
+    "description": "One state's Medicaid spending across federal fiscal years 2014 onward: total computable, federal share, state share and the effective federal share percentage per year, plus year-over-year growth. Defaults to the headline \"Total Net Expenditures\"; pass `category` to trend one service line (e.g. \"Prescribed Drugs\"). Source: CMS, Medicaid Financial Management Report (CMS-64).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "State, territory or DC (name or code), or \"national\"."
+        },
+        "category": {
+          "type": "string",
+          "description": "Exact or partial service-category name. Default \"Total Net Expenditures\". If several categories match, the exact one wins, otherwise the matches are listed."
+        },
+        "program": {
+          "type": "string",
+          "enum": [
+            "medical_assistance",
+            "administration"
+          ],
+          "description": "Default medical_assistance."
+        }
+      },
+      "required": [
+        "state"
+      ]
+    }
+  },
+  {
+    "name": "medicaid_spending_ranking",
+    "description": "States ranked by Medicaid spending in a federal fiscal year (total computable, federal share, state share, effective federal share percentage), largest first. Source: CMS, Medicaid Financial Management Report (CMS-64 net expenditures). Pass `category` to rank on one service line instead of the headline total.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "fiscal_year": {
+          "type": "integer",
+          "description": "Federal fiscal year. Default: latest."
+        },
+        "sort_by": {
+          "type": "string",
+          "enum": [
+            "total_computable",
+            "federal_share",
+            "state_share",
+            "federal_share_pct"
+          ],
+          "description": "Default total_computable."
+        },
+        "category": {
+          "type": "string",
+          "description": "Service-category name to rank on. Default \"Total Net Expenditures\"."
+        },
+        "program": {
+          "type": "string",
+          "enum": [
+            "medical_assistance",
+            "administration"
+          ],
+          "description": "Default medical_assistance."
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Rows to return (default 60: every jurisdiction)."
+        }
+      }
+    }
+  },
+  {
+    "name": "medicaid_fmap",
+    "description": "Federal Medical Assistance Percentage (the federal share of a state's Medicaid costs) and the enhanced FMAP for CHIP, by state and federal fiscal year 2014 through 2027. Source: HHS, annual Federal Medical Assistance Percentages notice in the Federal Register. Give a state for its rate history, a fiscal year for every state that year, or both for one rate. Standard rates only: temporary pandemic or disaster increases, the expansion-adult 90 percent rate and territory-specific program rates are not in this table.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "State, territory or DC (name or code). Omit for all jurisdictions."
+        },
+        "fiscal_year": {
+          "type": "integer",
+          "description": "Federal fiscal year, 2014-2027. Omit for all years (with a state) or the latest (without)."
+        }
+      }
+    }
+  },
+  {
+    "name": "medicaid_expansion_spending",
+    "description": "Quarterly Medicaid spending on the ACA expansion (\"new adult\" / VIII) group by state, with total computable and federal share, newly eligible versus not newly eligible, next to the state's all-medical-assistance total. Source: CMS, Medicaid CMS-64 New Adult Group Expenditures. Newest quarter first. \"N/A\" in the source (state had not expanded) is returned as null.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "State name or code. Omit with a quarter to list every state for that quarter."
+        },
+        "quarter_end": {
+          "type": "string",
+          "description": "Quarter end date YYYY-MM-DD (e.g. 2025-06-30). Omit for recent quarters."
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum rows (default 12, max 200)."
+        }
+      }
+    }
+  },
+  {
+    "name": "medicaid_increased_fmap_spending",
+    "description": "Quarterly Medicaid expenditure under the temporary increased federal match periods, by state: the 6.2 point pandemic increase (Families First Act, 2020 onward) or the phase-down under the Consolidated Appropriations Act 2023. Returns all-medical-assistance total computable and federal share beside the share attributable to the increase. Source: CMS, Medicaid CMS-64 increased-FMAP expenditure reports.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "program": {
+          "type": "string",
+          "enum": [
+            "ffcra",
+            "caa2023"
+          ],
+          "description": "ffcra = pandemic increase (2020-2023 quarters); caa2023 = phase-down (2023-2024 quarters). Default ffcra."
+        },
+        "state": {
+          "type": "string",
+          "description": "State name or code. Omit to list all states for a quarter."
+        },
+        "quarter_end": {
+          "type": "string",
+          "description": "Quarter end date YYYY-MM-DD, e.g. 2020-06-30."
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum rows (default 12, max 200)."
+        }
+      }
+    }
+  }
+]

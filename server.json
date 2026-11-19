@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.pipeworx-io/medicaid-spending",
+  "title": "Medicaid Spending",
+  "description": "Medicaid spending: what each state spends on Medicaid, by service category and federal fiscal…",
+  "version": "0.1.0",
+  "websiteUrl": "https://pipeworx.io/packs/medicaid-spending",
+  "repository": {
+    "url": "https://github.com/pipeworx-io/mcp-medicaid-spending",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gateway.pipeworx.io/medicaid-spending/mcp"
+    }
+  ]
+}

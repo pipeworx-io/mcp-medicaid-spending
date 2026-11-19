@@ -1,0 +1,33 @@
+{
+  "name": "@pipeworx/mcp-medicaid-spending",
+  "version": "0.1.0",
+  "description": "Medicaid spending: what each state spends on Medicaid, by service category and federal fiscal year, split into federal and state share (CMS, Medicaid Financial Management Report, the CMS-64 net-expenditure series), the federal matching rates (FMAP and enhanced FMAP) by state and fiscal year (HHS…",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./tools.json": "./tools.json",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "mcp-medicaid-spending": "bin/cli.js"
+  },
+  "files": ["bin/", "lib/", "tools.json", "server.json"],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "medicaid-spending"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pipeworx-io/mcp-medicaid-spending.git"
+  },
+  "mcpName": "io.github.pipeworx-io/medicaid-spending",
+  "pipeworx": {
+    "mode": "gateway",
+    "slug": "medicaid-spending",
+    "gatewaySlug": "medicaid-spending",
+    "sourceHash": "v1-12320117a8b30a7f224f9aaca697b9a74161314aa05697ede7142887afefa43c",
+    "sourceCommit": "afcaf44429ea5fe1396ff1733e1b8651aeefcde8"
+  }
+}
